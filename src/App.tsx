@@ -1,10 +1,12 @@
-import React from 'react';
+import LandingPage from "@/pages/LandingPage.tsx";
+import Navbar from "@/components/Navbar.tsx";
 
 const App = () => {
     return (
-        <div>
-          hello
-        </div>
+        <>
+            <Navbar/>
+            <LandingPage/>
+        </>
     );
 };
 
