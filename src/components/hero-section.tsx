@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { Button } from '@/components/ui/button'
+import {Link} from "react-router-dom";
 
 const HeroSection = () => {
     const containerRef = useRef(null)
@@ -157,7 +158,7 @@ const HeroSection = () => {
                         Start Writing
                     </Button>
                     <Button variant="outline" className="px-8 py-6 rounded-full">
-                        Explore Blogs
+                        <Link to="/dashboard">Explore Blogs</Link>
                     </Button>
                 </div>
             </div>
