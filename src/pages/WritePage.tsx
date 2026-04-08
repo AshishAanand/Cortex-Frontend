@@ -7,7 +7,7 @@ import Color from '@tiptap/extension-color'
 import { Button } from '@/components/ui/button'
 import {
     Bold, Italic, Underline as UnderlineIcon, Heading1, Heading2,
-    List, Quote, Undo, Redo, Feather
+    List, Quote, Undo, Redo
 } from 'lucide-react'
 import { useState } from 'react'
 

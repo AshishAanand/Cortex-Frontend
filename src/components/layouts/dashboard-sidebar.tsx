@@ -13,7 +13,12 @@ import { Home, LogOut, PenTool, User, PanelLeft, Feather } from "lucide-react"
 import { useSidebar } from "@/components/ui/sidebar"
 import { useNavigate, useLocation } from "react-router-dom"
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 const DashboardSidebar = () => {
+
+    const { logout } = useAuth0();
+
     const { toggleSidebar, state, isMobile } = useSidebar()
     const navigate = useNavigate()
     const location = useLocation()
@@ -53,7 +58,9 @@ const DashboardSidebar = () => {
                     <div className="w-[1px] h-4 bg-stone-200 mx-1" />
 
                     <button
-                        onClick={() => navigate('/logout')}
+                        onClick={() => logout({
+                            logoutParams: { returnTo: window.location.origin }
+                        })}
                         className="p-2.5 text-stone-400 hover:text-red-400 transition-colors"
                     >
                         <LogOut className="h-4 w-4" />
