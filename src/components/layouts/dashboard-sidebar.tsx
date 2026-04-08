@@ -27,29 +27,42 @@ const DashboardSidebar = () => {
         { title: "Profile", icon: User, path: "/dashboard/profile" },
     ]
 
-    // --- MOBILE VIEW (Bottom Dock) ---
+    // --- MOBILE VIEW (Ultra-Compact Bottom Dock) ---
     if (isMobile) {
         return (
-            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
-                <nav className="flex items-center justify-around p-2 bg-[#fdfcfb]/80 backdrop-blur-xl border border-stone-200 shadow-2xl rounded-full">
-                    {mainItems.map((item) => (
-                        <button
-                            key={item.path}
-                            onClick={() => navigate(item.path)}
-                            className={`p-4 rounded-full transition-all ${
-                                isActive(item.path) ? 'bg-stone-900 text-white scale-110' : 'text-stone-400'
-                            }`}
-                        >
-                            <item.icon className="h-5 w-5" />
-                        </button>
-                    ))}
-                    <button onClick={() => navigate('/logout')} className="p-4 text-stone-400">
-                        <LogOut className="h-5 w-5" />
+            <div className="fixed bottom-8 left-1/4 -translate-x-1/2 z-50 w-fit">
+                <nav className="flex items-center gap-1 p-1 bg-white/70 backdrop-blur-md border border-stone-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full">
+                    {mainItems.map((item) => {
+                        const active = isActive(item.path);
+                        return (
+                            <button
+                                key={item.path}
+                                onClick={() => navigate(item.path)}
+                                className={`p-2.5 rounded-full transition-all duration-300 ${
+                                    active
+                                        ? 'bg-stone-900 text-white shadow-lg'
+                                        : 'text-stone-400 hover:text-stone-600'
+                                }`}
+                            >
+                                <item.icon className={`h-4 w-4 transition-transform ${active ? 'scale-110' : 'scale-100'}`} />
+                            </button>
+                        );
+                    })}
+
+                    {/* Subtle Divider */}
+                    <div className="w-[1px] h-4 bg-stone-200 mx-1" />
+
+                    <button
+                        onClick={() => navigate('/logout')}
+                        className="p-2.5 text-stone-400 hover:text-red-400 transition-colors"
+                    >
+                        <LogOut className="h-4 w-4" />
                     </button>
                 </nav>
             </div>
         )
     }
+
 
     // --- DESKTOP/TABLET VIEW ---
     return (
@@ -64,9 +77,7 @@ const DashboardSidebar = () => {
                         <Feather className="h-4 w-4 text-stone-50" />
                     </div>
                     {!isCollapsed && (
-                        <span className="font-serif italic text-xl tracking-tight text-stone-800 animate-in fade-in slide-in-from-left-2">
-                            Cortex
-                        </span>
+                        <span className="font-serif italic text-lg tracking-tight hidden sm:block text-stone-50">Cortex Legacy</span>
                     )}
                 </div>
 

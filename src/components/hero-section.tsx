@@ -1,165 +1,131 @@
-'use client'
-
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { Button } from '@/components/ui/button'
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
 
 const HeroSection = () => {
     const containerRef = useRef(null)
     const titleRef = useRef(null)
     const paraRef = useRef(null)
     const buttonsRef = useRef(null)
-    const blob1Ref = useRef(null)
-    const blob2Ref = useRef(null)
+    const paperRef = useRef(null)
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-
-            // 🔥 Timeline (Cinematic Entry)
             const tl = gsap.timeline()
 
+            // 🖋️ Cinematic Reveal
             tl.from(titleRef.current, {
-                y: 100,
+                y: 60,
                 opacity: 0,
-                duration: 1.2,
+                duration: 1.8,
                 ease: "power4.out"
             })
                 .from(paraRef.current, {
-                    y: 50,
+                    y: 30,
                     opacity: 0,
-                    duration: 1,
+                    duration: 1.5,
                     ease: "power3.out"
-                }, "-=0.6")
+                }, "-=1.2")
                 .from(buttonsRef.current, {
-                    y: 40,
+                    y: 20,
                     opacity: 0,
-                    duration: 0.8,
-                    ease: "power3.out"
-                }, "-=0.6")
-
-            // 🌊 Floating blobs animation
-            gsap.to(blob1Ref.current, {
-                x: 100,
-                y: 80,
-                duration: 8,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            })
-
-            gsap.to(blob2Ref.current, {
-                x: -120,
-                y: -60,
-                duration: 10,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            })
-
-            // 🧲 Magnetic Buttons
-            const buttons = buttonsRef.current.querySelectorAll("button")
-
-            buttons.forEach(btn => {
-                btn.addEventListener("mousemove", (e) => {
-                    const rect = btn.getBoundingClientRect()
-                    const x = e.clientX - rect.left - rect.width / 2
-                    const y = e.clientY - rect.top - rect.height / 2
-
-                    gsap.to(btn, {
-                        x: x * 0.2,
-                        y: y * 0.2,
-                        scale: 1.08,
-                        duration: 0.3,
-                        ease: "power2.out"
-                    })
-                })
-
-                btn.addEventListener("mouseleave", () => {
-                    gsap.to(btn, {
-                        x: 0,
-                        y: 0,
-                        scale: 1,
-                        duration: 0.4,
-                        ease: "elastic.out(1, 0.4)"
-                    })
-                })
-            })
-
-            // 🖱️ Parallax effect
-            const move = (e) => {
-                const x = (e.clientX / window.innerWidth - 0.5) * 40
-                const y = (e.clientY / window.innerHeight - 0.5) * 40
-
-                gsap.to(blob1Ref.current, {
-                    x: x,
-                    y: y,
                     duration: 1,
                     ease: "power2.out"
-                })
+                }, "-=1")
 
-                gsap.to(blob2Ref.current, {
-                    x: -x,
-                    y: -y,
-                    duration: 1,
+            // 🕯️ Ambient Light Breathing
+            gsap.to(".ambient-glow", {
+                opacity: 0.5,
+                scale: 1.1,
+                duration: 5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            })
+
+            // 🖱️ Smooth Mouse Parallax
+            const handleMove = (e: MouseEvent) => {
+                const { clientX, clientY } = e
+                const xPos = (clientX / window.innerWidth - 0.5) * 30
+                const yPos = (clientY / window.innerHeight - 0.5) * 30
+
+                gsap.to(paperRef.current, {
+                    x: xPos,
+                    y: yPos,
+                    duration: 2,
                     ease: "power2.out"
                 })
             }
 
-            window.addEventListener("mousemove", move)
-
+            window.addEventListener("mousemove", handleMove)
+            return () => window.removeEventListener("mousemove", handleMove)
         }, containerRef)
 
         return () => ctx.revert()
     }, [])
 
     return (
+        /* Snap-align ensures the section locks to the screen */
         <section
             ref={containerRef}
-            className="relative min-h-screen w-full overflow-hidden pt-20"
+            /* 1. Ensure overflow is allowed (auto) and use min-height */
+            className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#fdfcfb]"
         >
-            {/* Background */}
-            <div className="absolute inset-0 -z-10">
+            {/* 2. Absolute elements remain as they are */}
+            <div ref={paperRef} className="absolute inset-0 -z-10 opacity-[0.04] pointer-events-none bg-[url('https://transparenttextures.com')]" />
 
-                <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
 
-                {/* Animated blobs */}
-                <div ref={blob1Ref} className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
-                <div ref={blob2Ref} className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+            {/* 🕯️ Dynamic Ambient Glows */}
+            <div className="ambient-glow absolute top-[10%] left-[15%] h-[40vw] w-[40vw] rounded-full bg-orange-100/40 blur-[120px] -z-10" />
+            <div className="ambient-glow absolute bottom-[10%] right-[15%] h-[35vw] w-[35vw] rounded-full bg-stone-200/50 blur-[100px] -z-10" />
 
-                {/* Grid */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#333333_1px,transparent_1px),linear-gradient(to_bottom,#333333_1px,transparent_1px)] bg-[size:50px_50px] opacity-10" />
-            </div>
+            <div className="relative z-10 w-full max-w-5xl px-6 py-24 my-auto mx-auto flex flex-col items-center text-center">
 
-            {/* Content */}
-            <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-32 text-center">
+                {/* 🏷️ Small Tagline */}
+                {/* Your content here (Tagline, Title, Para, Buttons) */}
+                <div className="mb-8 flex justify-center animate-in fade-in duration-1000">
+            <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-stone-400 font-bold">
+                <span className="h-[1px] w-8 bg-stone-200" />
+                Est. MMXXVI
+                <span className="h-[1px] w-8 bg-stone-200" />
+            </span>
+                </div>
 
+
+
+                {/* ✍️ Serif Title with Responsive Fluid Sizing */}
                 <h1
                     ref={titleRef}
-                    className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-foreground leading-tight"
+                    className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif italic text-stone-800 leading-[1.1] tracking-tight max-w-4xl"
                 >
-                    Where Deep Thinking
-                    <br />
-                    Becomes Powerful Writing
+                    Where deep thinking <br />
+                    <span className="not-italic font-normal text-stone-900">meets its legacy.</span>
                 </h1>
 
+                {/* 📖 Responsive Paragraph */}
                 <p
                     ref={paraRef}
-                    className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+                    className="mt-8 text-stone-500 font-light text-base sm:text-lg md:text-xl max-w-xl sm:max-w-2xl leading-relaxed italic"
                 >
-                    Cortex is a modern platform for thinkers, builders, and creators to share ideas that matter
+                    "Cortex is a sanctuary for builders and thinkers. A quiet space designed for the intentional writer."
                 </p>
 
+                {/* 🔘 Interaction Hub */}
                 <div
                     ref={buttonsRef}
-                    className="mt-10 flex flex-col sm:flex-row gap-4"
+                    className="mt-12 flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto"
                 >
-                    <Button className="bg-accent text-accent-foreground px-8 py-6 rounded-full">
-                        Start Writing
-                    </Button>
-                    <Button variant="outline" className="px-8 py-6 rounded-full">
-                        <Link to="/dashboard">Explore Blogs</Link>
-                    </Button>
+                    <Link to="/dashboard/write" className="w-full sm:w-auto">
+                        <Button className="w-full sm:w-auto bg-stone-900 text-stone-50 px-10 py-7 rounded-full text-xs uppercase tracking-widest hover:bg-stone-800 hover:-translate-y-1 transition-all duration-500 shadow-2xl shadow-stone-300">
+                            Begin Your Entry
+                        </Button>
+                    </Link>
+                    <Link to="/dashboard" className="w-full sm:w-auto">
+                        <Button variant="ghost" className="w-full sm:w-auto text-stone-400 hover:text-stone-900 tracking-[0.2em] text-[10px] uppercase font-bold transition-colors">
+                            View The Archive
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </section>

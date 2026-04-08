@@ -7,7 +7,7 @@ import Color from '@tiptap/extension-color'
 import { Button } from '@/components/ui/button'
 import {
     Bold, Italic, Underline as UnderlineIcon, Heading1, Heading2,
-    List, Quote, Undo, Redo
+    List, Quote, Undo, Redo, Feather
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -31,6 +31,7 @@ const WritePage = () => {
     return (
         /* Soft 'Paper' background color (#fdfcfb or stone-50) */
         <div className="min-h-screen w-full flex justify-center bg-[#fdfcfb] px-6 py-20 text-stone-900 selection:bg-orange-100">
+
             <div className="w-full max-w-2xl">
 
                 {/* Minimalist Title - Serif fonts give a more 'writer' vibe */}
@@ -91,14 +92,19 @@ const WritePage = () => {
                 </div>
 
                 {/* Bottom Bar - Floating look */}
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white px-6 py-3 rounded-full border border-stone-200 shadow-lg">
-                    <span className="text-xs font-medium text-stone-400 uppercase tracking-widest">Draft</span>
-                    <div className="w-[1px] h-4 bg-stone-100" />
-                    <button className="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">Save</button>
-                    <button className="bg-stone-900 text-white px-5 py-1.5 rounded-full text-sm font-medium hover:bg-stone-800 transition-all active:scale-95">
+                <div className="fixed bottom-9 right-1 sm:right-6 z-50 flex items-center gap-2.5 bg-white/80 backdrop-blur-md px-2 py-1.5 rounded-full border border-stone-200 shadow-sm transition-all hover:shadow-md">
+
+                    {/* Secondary Action */}
+                    <button className="text-[10px] font-bold text-stone-500 hover:text-stone-900 transition-colors uppercase tracking-tight px-1">
+                        Save
+                    </button>
+
+                    {/* Primary Action - Compact & Punchy */}
+                    <button className="bg-stone-900 text-stone-50 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-all active:scale-95 shadow-sm">
                         Publish
                     </button>
                 </div>
+
             </div>
         </div>
     )
